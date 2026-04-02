@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seismic Facies Classifier</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="app">
+
+    <!-- ─── HEADER ─── -->
+    <header>
+        <h1>🌍 Seismic Facies Classifier</h1>
+        <p>Patch-classify 2D seismic sections using Convolutional Neural Networks</p>
+    </header>
+
+    <main>
+
+        <!-- ─── STEP 1 : TRAIN ─── -->
+        <section class="card">
+            <div class="card-header">
+                <span class="step">1</span>
+                <h2>Train CNN Model</h2>
+            </div>
+            <p class="desc">
+                Generate synthetic seismic patches and train a CNN to recognise
+                6&nbsp;geological facies types entirely in the browser.
+            </p>
+
+            <div class="row controls">
+                <label>Epochs
+                    <input id="inp-epochs" type="number" value="15" min="1" max="100" />
+                </label>
+                <label>Samples / class
+                    <input id="inp-samples" type="number" value="500" min="50" max="3000" step="50" />
+                </label>
+                <button id="btn-train" class="btn primary">🧠 Train Model</button>
+                <button id="btn-save"  class="btn small hidden">💾 Save</button>
+                <button id="btn-load"  class="btn small">📂 Load Saved</button>
+            </div>
+
+            <!-- training progress -->
+            <div id="train-progress" class="hidden">
+                <div class="bar-track"><div id="bar-fill" class="bar-fill"></div></div>
+                <div class="metrics">
+                    <span>Epoch <b id="m-epoch">0</b></span>
+                    <span>Loss <b id="m-loss">—</b></span>
+                    <span>Acc <b id="m-acc">—</b></span>
+                    <span>Val Acc <b id="m-val">—</b></span>
+                </div>
+                <canvas id="chart" width="620" height="180"></canvas>
+            </div>
+
+            <div id="train-done" class="badge hidden">✅ Model ready</div>
+        </section>
+
+        <!-- ─── STEP 2 : UPLOAD ─── -->
+        <section class="card">
+            <div class="card-header">
+                <span class="step">2</span>
+                <h2>Seismic Image</h2>
+            </div>
+            <p class="desc">Upload a real seismic section or generate a synthetic demo.</p>
+
+            <div class="upload-row">
+                <div id="drop-zone" class="drop-zone">
+                    <span class="icon">📁</span>
+                    <p>Drag &amp; drop or click</p>
+                    <p class="small">.png  .jpg  .tif</p>
+                    <input id="file-input" type="file" accept="image/*" hidden />
+                </div>
+
+                <span class="or">OR</span>
+
+                <button id="btn-demo" class="btn secondary">🎨 Generate Demo Image</button>
+            </div>
+
+            <div id="img-info" class="badge hidden"></div>
+        </section>
+
+        <!-- ─── STEP 3 : CLASSIFY ─── -->
+        <section class="card">
+            <div class="card-header">
+                <span class="step">3</span>
+                <h2>Classify Patches</h2>
+            </div>
+
+            <div class="row controls">
+                <button id="btn-classify" class="btn primary" disabled>🔬 Classify Image</button>
+                <label id="lbl-opacity" class="hidden">
+                    Overlay&nbsp;
+                    <input id="rng-opacity" type="range" min="0" max="100" value="50" />
+                    <span id="val-opacity">50 %</span>
+                </label>
+            </div>
+        </section>
+
+        <!-- ─── RESULTS ─── -->
+        <section class="card" id="results-section">
+            <h2>📊 Results</h2>
+
+            <div class="canvas-grid">
+                <div class="panel">
+                    <h3>Original</h3>
+                    <canvas id="cv-original"></canvas>
+                </div>
+                <div class="panel">
+                    <h3>Facies Map</h3>
+                    <canvas id="cv-facies"></canvas>
+                </div>
+                <div class="panel">
+                    <h3>Overlay</h3>
+                    <canvas id="cv-overlay"></canvas>
+                </div>
+            </div>
+
+            <div id="legend" class="hidden">
+                <h3>Legend</h3>
+                <div id="legend-items" class="legend-grid"></div>
+            </div>
+
+            <div id="stats" class="hidden">
+                <h3>Patch Statistics</h3>
+                <div id="stats-bars"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Built with <b>TensorFlow.js</b> · CNN Seismic Facies Classification</p>
+    </footer>
+</div>
+
+<!-- ─── SCRIPTS ─── -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0"></script>
+<script src="js/config.js"></script>
+<script src="js/syntheticData.js"></script>
+<script src="js/patchExtractor.js"></script>
+<script src="js/cnnModel.js"></script>
+<script src="js/faciesRenderer.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

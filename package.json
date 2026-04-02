@@ -1,0 +1,12 @@
+{
+  "name": "seismic-facies-classifier",
+  "version": "1.0.0",
+  "description": "Patch-classify 2D seismic sections using CNNs in the browser",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
